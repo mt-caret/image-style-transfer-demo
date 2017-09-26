@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	</head>
+	<body>
+		<p>ファイル選択</p>
+		<input type="file" id="image" accept="image/png">
+		<button id="button">アップロード</button>
+		<img src="" id="output">
+		<script>
+document.addEventListener('DOMContentLoaded', () => {
+	const fileInput = document.getElementById('image');
+	const uploadButton = document.getElementById('button');
+	const outputImage = document.getElementById('output');
+	uploadButton.addEventListener('click', async () => {
+		if (fileInput.files.length === 0) return; //TODO: error here?
+		const image = fileInput.files[0];
+
+		const form = new FormData();
+		form.append('file', image);
+		const reader = new FileReader();
+		reader.onload = (e) => { outputImage.src = e.target.result; };
+
+		const result = await fetch('/convert', { method: 'POST', body: form });
+		const out = await result.blob();
+		reader.readAsDataURL(out);
+	});
+});
+		</script>
+	</body>
+</html>
