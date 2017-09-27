@@ -21,7 +21,7 @@ def convert():
         contents = file.read()
         filename = hashlib.sha256(contents).hexdigest() + '.png'
         path = os.path.join('/tmp', filename)
-        with open(path, 'w') as f:
+        with open(path, 'bw') as f:
             f.write(contents)
         print(path)
         return send_file(path, mimetype='image/png');
