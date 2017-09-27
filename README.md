@@ -1,11 +1,10 @@
 ## prerequisites
 
-- pipenv
+- Nix
 
 ## dev env
 
 ```
-$ SHELL=/bin/bash pipenv shell
-$ ./start.sh
+$ nix-shell
 ```
 
