@@ -10,6 +10,19 @@
 		<button id="button">アップロード</button>
 		<img src="" id="output">
 		<script>
+function wait(n) {
+  return new Promise((resolve, reject) => setTimeout(resolve, n));
+}
+async function query(filename) {
+  for (let i = 0; i < 60; i += 1) {
+    console.log(`querying for ${filename} ...`);
+    const isDone =
+      (await fetch(`/query/${filename}`).then(res => res.json())).done;
+    if (isDone) return true;
+    await wait(1000);
+  }
+  return false;
+}
 document.addEventListener('DOMContentLoaded', () => {
 	const fileInput = document.getElementById('image');
 	const uploadButton = document.getElementById('button');
@@ -20,12 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		const form = new FormData();
 		form.append('file', image);
-		const reader = new FileReader();
-		reader.onload = (e) => { outputImage.src = e.target.result; };
 
 		const result = await fetch('/convert', { method: 'POST', body: form });
-		const out = await result.blob();
-		reader.readAsDataURL(out);
+		const filename = (await result.json()).filename;
+
+    if (!(await query(filename))) return;
+    outputImage.src = `/result/${filename}`;
 	});
 });
 		</script>
