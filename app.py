@@ -12,6 +12,8 @@ from evaluate import ffwd_to_img
 
 ALLOWED_EXTENSIONS = set(['png'])
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -22,7 +24,6 @@ def convert():
     if 'file' not in request.files:
         abort(400)
     file = request.files['file']
-    print('filename: ' + file.filename)
     if file.filename == '':
         abort(400)
     if file and allowed_file(file.filename):

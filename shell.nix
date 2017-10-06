@@ -4,6 +4,7 @@ with import <nixpkgs> {};
   extraLibs = with pkgs.python35Packages; [
     scipy
     flask
+    gunicorn
     tensorflow
     pillow
   ];
